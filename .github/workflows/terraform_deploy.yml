@@ -2,6 +2,7 @@ name: terraform
 on: 
   release:
     types: [published]
+  workflow_dispatch:
 
 defaults:
   run:

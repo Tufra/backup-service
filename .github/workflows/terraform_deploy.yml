@@ -1,0 +1,23 @@
+name: terraform
+on: 
+  release:
+    types: [published]
+
+defaults:
+  run:
+    working-directory: ./terraform
+
+env:
+  TF_VAR_cloud_id: ${{ secrets.TV_VAR_CLOUD_ID }}
+  TF_VAR_folder_id: ${{ secrets.TV_VAR_FOLDER_ID }}
+  TF_VAR_subnet_id: ${{ secrets.TV_VAR_SUBNET_ID }}
+  TF_VAR_sa_key: ${{ secrets.TV_VAR_SA_KEY }}
+  TF_VAR_ssh_key: ${{ secrets.TV_VAR_SSH_KEY }}
+
+jobs:
+  apply-terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+

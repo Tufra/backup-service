@@ -20,5 +20,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      
       - uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+      
+      - name: terraform init
+        id: init  
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate
+      
+      - name: terraform plan
+        id: plan
+        run: terraform plan
+
+      - name: terraform apply
+        id: apply
+        run: terraform apply -auto-approve
+
 

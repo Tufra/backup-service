@@ -7,11 +7,26 @@ terraform {
   required_version = ">= 0.13"
 }
 
+# variable "cloud_id" {
+#   default = "b1gpi61dpuld9gqcsg9m"
+# }
+# variable "folder_id" {
+#   default = "b1g5qj560obk3rtg0arp"
+# }
+
+# variable "subnet_id" {
+#   default = "e2lmhvjubv98govb13gu"
+# }
+
+# variable "ssh_key" {
+#   default = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEpMqnaLlaRp4LJS5yyM51OwlBUJNw3nFwHZ21C8XwAP"
+# }
+
 provider "yandex" {
   zone = "ru-central1-b"
-  service_account_key_file = file("${path.module}/../../../key.json")
-  cloud_id                 = "b1gpi61dpuld9gqcsg9m"
-  folder_id                = "b1g5qj560obk3rtg0arp"
+  service_account_key_file = var.sa_key
+  cloud_id                 = var.cloud_id 
+  folder_id                = var.folder_id
 }
 
 resource "yandex_compute_instance" "main_vm" {
@@ -31,7 +46,7 @@ resource "yandex_compute_instance" "main_vm" {
   }
 
   network_interface {
-    subnet_id = "e2lmhvjubv98govb13gu"
+    subnet_id = var.subnet_id
     nat = true
   }
 
@@ -41,7 +56,7 @@ resource "yandex_compute_instance" "main_vm" {
 
   metadata = {
     docker-compose = file("${path.module}/docker-compose.yaml")
-    user-data = file("${path.module}/cloud-config.yaml")
+    user-data = format(file("${path.module}/cloud-config.yaml"), var.ssh_key)
   }
 }
 

@@ -7,20 +7,29 @@ terraform {
   required_version = ">= 0.13"
 }
 
-# variable "cloud_id" {
-#   default = "b1gpi61dpuld9gqcsg9m"
-# }
-# variable "folder_id" {
-#   default = "b1g5qj560obk3rtg0arp"
-# }
+variable "cloud_id" {
+  description = "cloud id"
+  sensitive = true
+}
+variable "folder_id" {
+  description = "folder id"
+  sensitive = true
+}
 
-# variable "subnet_id" {
-#   default = "e2lmhvjubv98govb13gu"
-# }
+variable "subnet_id" {
+  description = "subnet id"
+  sensitive = true
+}
 
-# variable "ssh_key" {
-#   default = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEpMqnaLlaRp4LJS5yyM51OwlBUJNw3nFwHZ21C8XwAP"
-# }
+variable "ssh_key" {
+  description = "public ssh key"
+  sensitive = true
+}
+
+variable "sa_key" {
+  description = "service account key json"
+  sensitive = true
+}
 
 provider "yandex" {
   zone = "ru-central1-b"

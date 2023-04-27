@@ -23,18 +23,16 @@ on:
         RESULT:
           description: Result
           value: ${{ jobs.setup.outputs.result }}
-
-env:
-    TOKEN: ${{ secrets.DUCKDNS_TOKEN }}
-    
-    
+      
 jobs:
     setup:
       runs-on: ubuntu-latest
       outputs:
         result: ${{ steps.request.outputs.result }}
+      env:
+        TOKEN: ${{ secrets.DUCKDNS_TOKEN }}
+        DOMAIN: ${{ inputs.DOMAIN }}
+        IP: ${{ inputs.EXTERNAL_IP }}
       steps:
         - id: request
-          run: echo 'result=$(echo url="https://www.duckdns.org/update?domains=${{ inputs.DOMAIN }}&token=${{ env.TOKEN }}&ip=${{ inputs.EXTERNAL_IP }}" | curl -k -K -)' >> $GITHUB_OUTPUT
-
-
+          run: curl --url "https://www.duckdns.org/update?domains=${{ env.DOMAIN }}&token=${{ env.TOKEN }}&ip=${{ env.IP }}"

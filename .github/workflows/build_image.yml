@@ -35,7 +35,7 @@ jobs:
     build:
       runs-on: ubuntu-latest
       outputs:
-        image_tag: "image_tag=${{ inputs.DOCKERHUB_USERNAME }}/sampleserver:${{ env.COMMIT_SHA }}"
+        image_tag: ${{ inputs.DOCKERHUB_USERNAME }}/sampleserver:${{ env.COMMIT_SHA }}
       steps:
         - name: Checkout
           uses: actions/checkout@v3

@@ -22,7 +22,7 @@ on:
       outputs:
         IMAGE_TAG:
           description: Image tag to use in compose
-          value: 
+          value: ${{ jobs.build.outputs.image_tag }}
 
     release:
         types: [published]

@@ -8,11 +8,14 @@ on:
           description: Commit SHA for image tag
           required: true
           type: string
-      
-      secrets:
+
         DOCKERHUB_USERNAME:
           description: Dockerhub username
           required: true
+          type: string
+
+      
+      secrets:
         DOCKERHUB_TOKEN:
           description: Dockerhub token
           required: true
@@ -27,14 +30,13 @@ on:
 
 env:
     COMMIT_SHA: ${{ github.sha }}
-    USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
     
     
 jobs:
     build:
       runs-on: ubuntu-latest
       outputs:
-        image_tag: ${{ steps.push.outputs.image_tag }}
+        image_tag: "image_tag=${{ inputs.DOCKERHUB_USERNAME }}/sampleserver:${{ env.COMMIT_SHA }}"
       steps:
         - name: Checkout
           uses: actions/checkout@v3
@@ -54,9 +56,6 @@ jobs:
           with:
             context: ./sample-server
             push: true
-            tags: ${{ env.USERNAME }}/sampleserver:${{ env.COMMIT_SHA }}
-
-        - id: echo  
-          run: echo "image_tag=${{ env.USERNAME }}/sampleserver:${{ env.COMMIT_SHA }}" >> $GITHUB_OUTPUT
+            tags: ${{ inputs.DOCKERHUB_USERNAME }}/sampleserver:${{ env.COMMIT_SHA }}
 
 

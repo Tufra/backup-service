@@ -49,13 +49,15 @@ jobs:
         
         - name: Build and push
           uses: docker/build-push-action@v4
+          id: push
           with:
-            context: .
-            file: ./sample-server/Dockerfile
+            context: ./sample-server
             push: true
             tags: ${{ secrets.DOCKERHUB_USERNAME }}/sampleserver:${{ env.COMMIT_SHA }}
           
-        - id: push
+        - run: echo "${{ steps.push.outputs }}"
+
+        - id: echo  
           run: echo "image_tag=${{ secrets.DOCKERHUB_USERNAME }}/sampleserver:${{ env.COMMIT_SHA }}" >> $GITHUB_OUTPUT
 
 

@@ -55,6 +55,8 @@ jobs:
       
       - uses: hashicorp/setup-terraform@v2
 
+      - run: echo "${{ inputs.image_tag }}"
+
       - name: Terraform fmt
         id: fmt
         run: terraform fmt -check

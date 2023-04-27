@@ -80,5 +80,4 @@ data "yandex_compute_image" "container-optimized-image" {
 
 output "external_ip" {
   value = yandex_compute_instance.main_vm.network_interface.0.nat_ip_address
-  type = string
 }

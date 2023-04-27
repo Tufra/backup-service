@@ -20,13 +20,14 @@ on:
       outputs:
         IMAGE_TAG:
           description: Image tag to use in compose
-          value: ${{ jobs.build.outputs.image_tag }}
+          value: 
 
     release:
         types: [published]
 
 env:
     COMMIT_SHA: ${{ github.sha }}
+    USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
     
     
 jobs:
@@ -53,11 +54,11 @@ jobs:
           with:
             context: ./sample-server
             push: true
-            tags: ${{ secrets.DOCKERHUB_USERNAME }}/sampleserver:${{ env.COMMIT_SHA }}
+            tags: 
           
-        - run: echo "${{ steps.push.outputs }}"
+        - run: echo "${{ steps.push.outputs.imageid }}""
 
         - id: echo  
-          run: echo "image_tag=${{ secrets.DOCKERHUB_USERNAME }}/sampleserver:${{ env.COMMIT_SHA }}" >> $GITHUB_OUTPUT
+          run: echo "image_tag=${{ env.USERNAME }}/sampleserver:${{ env.COMMIT_SHA }}" >> $GITHUB_OUTPUT
 
 

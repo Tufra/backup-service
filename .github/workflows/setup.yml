@@ -17,10 +17,10 @@ jobs:
       image_tag: ${{ needs.build-image.outputs.IMAGE_TAG }}
     secrets: inherit
 
-  use-ip:
-    runs-on: ubuntu-latest
+  setup-duckdns:
+    uses: ./.github/workflows/duckdns-setup.yml
     needs: apply-terraform
-    env:
-      TARGET_IP: ${{ needs.apply-terraform.outputs.VM_EXTERNAL_IP }} 
-    steps:
-      - run: echo "$TARGET_IP"
+    with:
+      EXTERNAL_IP: ${{ needs.apply-terraform.outputs.VM_EXTERNAL_IP }}
+      DOMAIN: sus-magic
+    secrets: inherit

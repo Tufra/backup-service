@@ -7,7 +7,6 @@ jobs:
     uses: ./.github/workflows/build_image.yml
     with:
       COMMIT_SHA: ${{ github.sha }}
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
     secrets: inherit
 
   apply-terraform:

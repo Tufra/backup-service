@@ -9,15 +9,14 @@ on:
           required: true
           type: string
 
-        DOCKERHUB_USERNAME:
-          description: Dockerhub username
-          required: true
-          type: string
-
       
       secrets:
         DOCKERHUB_TOKEN:
           description: Dockerhub token
+          required: true
+
+        DOCKERHUB_USERNAME:
+          description: Dockerhub username
           required: true
       
       outputs:
@@ -36,7 +35,7 @@ jobs:
     build:
       runs-on: ubuntu-latest
       outputs:
-        image_tag: "image_tag=${{ inputs.DOCKERHUB_USERNAME }}/sampleserver:${{ env.COMMIT_SHA }}"
+        image_tag: "image_tag=${{ secrets.DOCKERHUB_USERNAME }}/sampleserver:${{ env.COMMIT_SHA }}"
       steps:
         - name: Checkout
           uses: actions/checkout@v3

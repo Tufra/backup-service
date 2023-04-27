@@ -28,6 +28,7 @@ on:
 env:
     COMMIT_SHA: ${{ github.sha }}
     
+    
 jobs:
     build:
       runs-on: ubuntu-latest
@@ -50,7 +51,7 @@ jobs:
           uses: docker/build-push-action@v4
           with:
             context: .
-            file: ./Dockerfile
+            file: ./sample-server/Dockerfile
             push: true
             tags: ${{ secrets.DOCKERHUB_USERNAME }}/sampleserver:${{ env.COMMIT_SHA }}
           

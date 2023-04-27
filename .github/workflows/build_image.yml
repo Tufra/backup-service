@@ -52,9 +52,9 @@ jobs:
             context: .
             file: ./Dockerfile
             push: true
-            tags: ${{ secrets.DOCKERHUB_USERNAME }}/clockbox:${{ env.COMMIT_SHA }}
+            tags: ${{ secrets.DOCKERHUB_USERNAME }}/sampleserver:${{ env.COMMIT_SHA }}
           
         - id: push
-          run: echo "image_tag=${{ secrets.DOCKERHUB_USERNAME }}/clockbox:${{ env.COMMIT_SHA }}" >> $GITHUB_OUTPUT
+          run: echo "image_tag=${{ secrets.DOCKERHUB_USERNAME }}/sampleserver:${{ env.COMMIT_SHA }}" >> $GITHUB_OUTPUT
 
 

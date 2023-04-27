@@ -1,8 +1,37 @@
-name: terraform
+name: terraform apply
 on: 
   release:
     types: [published]
+  
   workflow_dispatch:
+
+  workflow_call:
+    inputs:
+      image_tag:
+        description: image tag
+        required: true
+        type: string
+    
+    secrets:
+      TF_VAR_CLOUD_ID:
+        required: true
+
+      TF_VAR_FOLDER_ID:
+        required: true
+
+      TF_VAR_SUBNET_ID:
+        required: true
+
+      TF_VAR_SA_KEY:
+        required: true
+        
+      TF_VAR_SSH_KEY:
+        required: true
+    
+    outputs:
+      VM_EXTERNAL_IP:
+        description: VM external ip
+        value: ${{ jobs.apply-terraform.outputs.external_ip }}
 
 defaults:
   run:
@@ -14,11 +43,13 @@ env:
   TF_VAR_subnet_id: ${{ secrets.TF_VAR_SUBNET_ID }}
   TF_VAR_sa_key: ${{ secrets.TF_VAR_SA_KEY }}
   TF_VAR_ssh_key: ${{ secrets.TF_VAR_SSH_KEY }}
-  sus: "amogus"
+  TF_VAR_image_tag: ${{ inputs.image_tag }}
 
 jobs:
   apply-terraform:
     runs-on: ubuntu-latest
+    outputs:
+      external_ip: ${{ steps.ext.outputs.stdout }}
     steps:
       - uses: actions/checkout@v3
       
@@ -41,8 +72,41 @@ jobs:
         id: plan
         run: terraform plan
 
+      - uses: actions/github-script@v6
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+            <details><summary>Validation Output</summary>
+      
+            \`\`\`\n
+            ${{ steps.validate.outputs.stdout }}
+            \`\`\`
+      
+            </details>
+      
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+      
+            <details><summary>Show Plan</summary>
+      
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`
+      
+            </details>
+
       - name: terraform apply
         id: apply
         run: terraform apply -auto-approve
+      
+      - name: extract external ip
+        id: ext
+        run: terraform output -raw external_ip
+
+      
 
 

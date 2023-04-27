@@ -26,6 +26,11 @@ variable "ssh_key" {
   sensitive = true
 }
 
+variable "image_tag" {
+  description = "container image tag"
+  sensitive = true
+}
+
 variable "sa_key" {
   description = "service account key json"
   sensitive = true
@@ -64,7 +69,7 @@ resource "yandex_compute_instance" "main_vm" {
   }
 
   metadata = {
-    docker-compose = file("${path.module}/docker-compose.yaml")
+    docker-compose = format(file("${path.module}/docker-compose.yaml"), var.image_tag)
     user-data = format(file("${path.module}/cloud-config.yaml"), var.ssh_key)
   }
 }
@@ -75,4 +80,5 @@ data "yandex_compute_image" "container-optimized-image" {
 
 output "external_ip" {
   value = yandex_compute_instance.main_vm.network_interface.0.nat_ip_address
+  type = string
 }

@@ -1,0 +1,25 @@
+name: deploy
+on:
+  workflow_dispatch:
+
+jobs:
+  build-image:
+    uses: ./.github/workflows/build_image.yml
+    with:
+      COMMIT_SHA: ${{ github.sha }}
+    secrets: inherit
+
+  apply-terraform:
+    uses: ./.github/workflows/terraform_deploy.yml
+    needs: build-image
+    with:
+      image_tag: ${{ needs.build-image.outputs.IMAGE_TAG }}
+    secrets: inherit
+
+  use-ip:
+    runs-on: ubuntu-latest
+    needs: apply-terraform
+    env:
+      TARGET_IP: ${{ needs.apply-terraform.outputs.VM_EXTERNAL_IP }} 
+    steps:
+      - run: echo "$TARGET_IP"

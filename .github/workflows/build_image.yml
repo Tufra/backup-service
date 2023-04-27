@@ -1,0 +1,60 @@
+name: build image
+on:
+    workflow_dispatch:
+
+    workflow_call:
+      inputs:
+        COMMIT_SHA:
+          description: Commit SHA for image tag
+          required: true
+          type: string
+      
+      secrets:
+        DOCKERHUB_USERNAME:
+          description: Dockerhub username
+          required: true
+        DOCKERHUB_TOKEN:
+          description: Dockerhub token
+          required: true
+      
+      outputs:
+        IMAGE_TAG:
+          description: Image tag to use in compose
+          value: ${{ jobs.build.outputs.image_tag }}
+
+    release:
+        types: [published]
+
+env:
+    COMMIT_SHA: ${{ github.sha }}
+    
+jobs:
+    build:
+      runs-on: ubuntu-latest
+      outputs:
+        image_tag: ${{ steps.push.outputs.image_tag }}
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+        
+        - name: Login to Docker Hub
+          uses: docker/login-action@v2
+          with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_TOKEN }}
+        
+        - name: Set up Docker Buildx
+          uses: docker/setup-buildx-action@v2
+        
+        - name: Build and push
+          uses: docker/build-push-action@v4
+          with:
+            context: .
+            file: ./Dockerfile
+            push: true
+            tags: ${{ secrets.DOCKERHUB_USERNAME }}/clockbox:${{ env.COMMIT_SHA }}
+          
+        - id: push
+          run: echo "image_tag=${{ secrets.DOCKERHUB_USERNAME }}/clockbox:${{ env.COMMIT_SHA }}" >> $GITHUB_OUTPUT
+
+

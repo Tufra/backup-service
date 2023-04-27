@@ -54,7 +54,7 @@ jobs:
           with:
             context: ./sample-server
             push: true
-            tags: 
+            tags: ${{ env.USERNAME }}/sampleserver:${{ env.COMMIT_SHA }}
           
         - run: echo "${{ steps.push.outputs.imageid }}""
 

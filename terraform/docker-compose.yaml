@@ -10,8 +10,8 @@ services:
     restart: unless-stopped
 
   app1:
-    container_name: nginx
-    image: "nginx"
+    container_name: server
+    image: "%s"
     ports:
-      - "80:80"
+      - "80:8000"
     restart: always

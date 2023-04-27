@@ -55,8 +55,6 @@ jobs:
             context: ./sample-server
             push: true
             tags: ${{ env.USERNAME }}/sampleserver:${{ env.COMMIT_SHA }}
-          
-        - run: echo "${{ steps.push.outputs.imageid }}""
 
         - id: echo  
           run: echo "image_tag=${{ env.USERNAME }}/sampleserver:${{ env.COMMIT_SHA }}" >> $GITHUB_OUTPUT

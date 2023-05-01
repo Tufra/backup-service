@@ -8,11 +8,6 @@ services:
       POSTGRES_PASSWORD: "%s"
     ports:
       - "5432:5432"
-    healthcheck:
-      test: [“CMD-SHELL”, “pg_isready”]
-      interval: 1s
-      timeout: 5s
-      retries: 10
 
   adminer:
     image: adminer
@@ -24,8 +19,7 @@ services:
     container_name: server
     image: "%s"
     depends_on:
-      db:
-        condition: service-healthy
+      - db
+    restart: always
     ports:
       - "80:8000"
-    restart: always

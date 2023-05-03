@@ -13,7 +13,8 @@ public class LoginModel : PageModel
 {
     private readonly ApplicationContext _context;
 
-    [BindProperty] public UserLogin UserLogin { get; set; } = new();
+    [BindProperty]
+    public UserLogin UserLogin { get; set; } = new();
 
 
     public LoginModel(ApplicationContext context)
@@ -27,6 +28,11 @@ public class LoginModel : PageModel
 
     public async Task<IActionResult> OnPost(UserLogin userLogin)
     {
+        if (!ModelState.IsValid)
+        {
+            return Page();
+        }
+
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Login == userLogin.Login && u.PasswordHash == userLogin.PasswordHash);
 
         if (user == null)
@@ -47,7 +53,7 @@ public class LoginModel : PageModel
 
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-        return RedirectToPage("Index");
+        return Redirect("/");
     }
 }
 

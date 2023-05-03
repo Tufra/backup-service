@@ -1,7 +1,15 @@
+using Backup_Management_Service;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<ApplicationContext>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Default")!);
+});
 
 var app = builder.Build();
 

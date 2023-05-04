@@ -8,6 +8,7 @@ namespace Backup_Management_Service;
 public class ApplicationContext : DbContext
 {
     public DbSet<User> Users { get; set; }
+    public DbSet<Backup> Backups { get; set; }
 
     public ApplicationContext(DbContextOptions options) : base(options)
     {

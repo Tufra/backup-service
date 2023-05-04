@@ -17,26 +17,97 @@
 <main class="container">
     <div class="create_backup">
         <h1>Create Backup</h1>
-        <input type="file" id="file_loader">
 
-        <div class="col-md-3 col">
-            <div class="col-md-3">
-                <input type="number" min="1" max="60" placeholder="mm">
-            </div>
-            <div class="col-md-3">
-                <input type="number" min="1" max="23" placeholder="hh">
-            </div>
-            <div class="col-md-3">
-                <input type="number" min="1" max="31" placeholder="DD">
-            </div>
-            <div class="col-md-3">
-                <input type="number" min="1" max="12" placeholder="MM">
-            </div>
-        </div>
+        <form method="post" asp-page-handler="CreateBackUp">
+            
+            <input type="file" id="file_loader">
 
-        <div>
-            <input class="btn btn-primary" type="submit" value="Submit">
-        </div>
+            <div class="cron-form">
+                <div class="cron-form__row">
+                    <label for="cron-minute">Minute</label>
+                    <div class="cron-form__field">
+                        <select id="cron-minute" asp-for="@Model.CreateBackupRequest.Cron_Minute">
+                            <option value="*">Every minute</option>
+                            <option value="*/5">Every 5 minutes</option>
+                            <option value="*/10">Every 10 minutes</option>
+                            <option value="*/15">Every 15 minutes</option>
+                            <option value="*/30">Every 30 minutes</option>
+                            <option value="0">Only at minute 0</option>
+                            <option value="15">Only at minute 15</option>
+                            <option value="30">Only at minute 30</option>
+                            <option value="45">Only at minute 45</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="cron-form__row">
+                    <label for="cron-hour">Hour</label>
+                    <div class="cron-form__field">
+                        <select id="cron-hour" asp-for="@Model.CreateBackupRequest.Cron_Hour">
+                            <option value="*">Every hour</option>
+                            <option value="*/2">Every 2 hours</option>
+                            <option value="*/3">Every 3 hours</option>
+                            <option value="*/4">Every 4 hours</option>
+                            <option value="*/6">Every 6 hours</option>
+                            <option value="*/12">Every 12 hours</option>
+                            <option value="0">Only at hour 0</option>
+                            <option value="6">Only at hour 6</option>
+                            <option value="12">Only at hour 12</option>
+                            <option value="18">Only at hour 18</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="cron-form__row">
+                    <label for="cron-day">Day of month</label>
+                    <div class="cron-form__field">
+                        <select id="cron-day" asp-for="@Model.CreateBackupRequest.Cron_Day">
+                            <option value="*">Every day</option>
+                            <option value="*/2">Every second day</option>
+                            <option value="*/3">Every third day</option>
+                            <option value="*/4">Every fourth day</option>
+                            <option value="*/5">Every fifth day</option>
+                            <option value="*/7">Every seventh day</option>
+                            <option value="1">Only on the first day of the month</option>
+                            <option value="15">Only on the 15th day of the month</option>
+                            <option value="31">Only on the 31st day of the month</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="cron-form__row">
+                    <label for="cron-month">Month</label>
+                    <div class="cron-form__field">
+                        <select id="cron-month" asp-for="@Model.CreateBackupRequest.Cron_Month">
+                            <option value="*">Every month</option>
+                            <option value="*/2">Every second month</option>
+                            <option value="1-11/2">Every odd month</option>
+                            <option value="2-12/2">Every even month</option>
+                            <option value="*/3">Every 3 months</option>
+                            <option value="*/6">Every 6 months</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="cron-form__row">
+                    <label for="cron-dow">Day of the week</label>
+                    <div class="cron-form__field">
+                        <select id="cron-dow" asp-for="@Model.CreateBackupRequest.Cron_WeekDay">
+                            <option value="*">Every day</option>
+                            <option value="1-5">Weekdays (Mon-Fri)</option>
+                            <option value="0,6">Weekends (Sun, Sat)</option>
+                            <option value="0">Sunday</option>
+                            <option value="1">Monday</option>
+                            <option value="2">Tuesday</option>
+                            <option value="3">Wednesday</option>
+                            <option value="4">Thursday</option>
+                            <option value="5">Friday</option>
+                            <option value="6">Saturday</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <input class="btn btn-primary" type="submit" value="Submit">
+            </div>
+        </form>
     </div>
 
     <div class="p-3 rounded shadow-sm">
@@ -44,31 +115,18 @@
             Last backups
         </h3>
 
-        <div class="d-flex pt-3">
-            <div class="pb-2 lh-sm mb-0 w-100 border-bottom">
-                <div class="d-flex justify-content-between">
-                    Backup1
-                    <a href="#" download=""><button>Download</button></a>
-                </div>
-            </div>
-        </div>
 
-        <div class="d-flex pt-3">
-            <div class="pb-2 lh-sm mb-0 w-100 border-bottom">
-                <div class="d-flex justify-content-between">
-                    Backup2
-                    <a href="#" download=""><button>Download</button></a>
+        @foreach (var backupInfo in Model.ListBackupsInfo)
+        {
+            <div class="d-flex pt-3">
+                <div class="pb-2 lh-sm mb-0 w-100 border-bottom">
+                    <div class="d-flex justify-content-between">
+                        @backupInfo.Name
+                        <a href="#" download=""><button>Download</button></a>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
 
-        <div class="d-flex pt-3">
-            <div class="pb-2 lh-sm mb-0 w-100 border-bottom">
-                <div class="d-flex justify-content-between">
-                    Backup3
-                    <a href="#" download=""><button>Download</button></a>
-                </div>
-            </div>
-        </div>
     </div>
 </main>

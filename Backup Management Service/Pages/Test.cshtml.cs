@@ -13,7 +13,7 @@ namespace Backup_Management_Service.Pages
     public class TestModel : PageModel
     {
         private readonly ApplicationContext _dbContext;
-        public List<Backup> ListBackups { get; set; } = new List<Backup>();
+        public List<BackupInfo> ListBackups { get; set; } = new List<BackupInfo>();
 
         public TestModel(ApplicationContext dbContext)
         {
@@ -29,9 +29,9 @@ namespace Backup_Management_Service.Pages
         {
             GetBackupFile(backupId);
         }
-        public async Task<List<Backup>> GetAllBackups(Guid userId)
+        public async Task<List<BackupInfo>> GetAllBackups(Guid userId)
         {
-            var backups = await _dbContext.Backups.Where(x => x.UserId == userId).ToListAsync();
+            var backups = await _dbContext.BackupsInfo.Where(x => x.UserId == userId).ToListAsync();
             return backups;
         }
 

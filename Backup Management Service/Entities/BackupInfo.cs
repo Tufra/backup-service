@@ -1,6 +1,6 @@
 ﻿namespace Backup_Management_Service.Entities
 {
-    public class Backup
+    public class BackupInfo
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }

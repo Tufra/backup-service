@@ -19,7 +19,7 @@
         <h1>Create Backup</h1>
 
         <form method="post" asp-page-handler="CreateBackUp">
-            
+
             <input type="file" id="file_loader">
 
             <div class="cron-form">
@@ -115,14 +115,16 @@
             Last backups
         </h3>
 
-
         @foreach (var backupInfo in Model.ListBackupsInfo)
         {
             <div class="d-flex pt-3">
                 <div class="pb-2 lh-sm mb-0 w-100 border-bottom">
                     <div class="d-flex justify-content-between">
                         @backupInfo.Name
-                        <a href="#" download=""><button>Download</button></a>
+                        <form method="post" asp-page-handler="DownloadBackupFile">
+                            <input type="hidden" name="backupId" value="@backupInfo.Id" />
+                            <button type="submit" class="btn btn-primary">Download</button>
+                        </form>
                     </div>
                 </div>
             </div>

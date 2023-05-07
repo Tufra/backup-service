@@ -1,8 +1,25 @@
 version: '3.7'
 services:
-  app1:
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: "%s"
+    ports:
+      - "5432:5432"
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  main_app:
     container_name: server
     image: "%s"
+    depends_on:
+      - db
+    restart: always
     ports:
       - "80:80"
-    restart: always

@@ -7,6 +7,7 @@ terraform {
   required_version = ">= 0.13"
 }
 
+
 variable "cloud_id" {
   description = "cloud id"
   sensitive = true
@@ -35,6 +36,12 @@ variable "sa_key" {
   description = "service account key json"
   sensitive = true
 }
+
+variable "postgres_password" {
+  description = "postgresql password"
+  sensitive = true
+}
+
 
 provider "yandex" {
   zone = "ru-central1-b"
@@ -69,7 +76,7 @@ resource "yandex_compute_instance" "main_vm" {
   }
 
   metadata = {
-    docker-compose = format(file("${path.module}/docker-compose.yaml"), var.image_tag)
+    docker-compose = format(file("${path.module}/docker-compose.yaml"), var.postgres_password, var.image_tag)
     user-data = format(file("${path.module}/cloud-config.yaml"), var.ssh_key)
   }
 }

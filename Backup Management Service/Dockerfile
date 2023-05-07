@@ -11,10 +11,10 @@ COPY ["Backup Management Service/Backup Management Service.csproj", "Backup Mana
 RUN dotnet restore "Backup Management Service/Backup Management Service.csproj"
 COPY . .
 WORKDIR "/src/Backup Management Service"
-RUN dotnet build "Backup Management Service.csproj" -c Release -o /app/build
+RUN dotnet build "Backup Management Service.csproj" -c Development -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Backup Management Service.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Backup Management Service.csproj" -c Development -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

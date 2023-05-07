@@ -8,6 +8,7 @@ jobs:
     with:
       COMMIT_SHA: ${{ github.sha }}
       DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
+      IMAGE_NAME: ${{ vars.IMAGE_NAME }}
     secrets: inherit
 
   apply-terraform:

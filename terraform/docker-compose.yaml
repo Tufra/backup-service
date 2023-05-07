@@ -1,17 +1,8 @@
 version: '3.7'
 services:
-  duckdns:
-    image: lscr.io/linuxserver/duckdns:latest
-    container_name: duckdns
-    environment:
-      - SUBDOMAINS="sus-magic"
-      - TOKEN="f28a7193-7bfc-438f-a064-f4c121cd14d9"
-      - LOG_FILE=false #optional
-    restart: unless-stopped
-
   app1:
     container_name: server
     image: "%s"
     ports:
-      - "80:8000"
+      - "80:7228"
     restart: always

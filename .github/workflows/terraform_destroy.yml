@@ -1,0 +1,77 @@
+name: terraform apply
+on: 
+  release:
+    types: [published]
+  
+  workflow_dispatch:
+
+  workflow_call:
+    inputs:
+      image_tag:
+        description: image tag
+        required: false
+        type: string
+        default: ""
+    
+    secrets:
+      TF_VAR_CLOUD_ID:
+        required: true
+
+      TF_VAR_FOLDER_ID:
+        required: true
+
+      TF_VAR_SUBNET_ID:
+        required: true
+
+      TF_VAR_SA_KEY:
+        required: true
+        
+      TF_VAR_SSH_KEY:
+        required: true
+
+defaults:
+  run:
+    working-directory: ./terraform
+
+env:
+  TF_VAR_cloud_id: ${{ secrets.TF_VAR_CLOUD_ID }}
+  TF_VAR_folder_id: ${{ secrets.TF_VAR_FOLDER_ID }}
+  TF_VAR_subnet_id: ${{ secrets.TF_VAR_SUBNET_ID }}
+  TF_VAR_sa_key: ${{ secrets.TF_VAR_SA_KEY }}
+  TF_VAR_ssh_key: ${{ secrets.TF_VAR_SSH_KEY }}
+  TF_VAR_image_tag: ${{ inputs.image_tag }}
+  TF_VAR_postgres_password: ${{ secrets.TF_VAR_POSTGRES_PASSWORD }}
+
+jobs:
+  apply-terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: hashicorp/setup-terraform@v2
+
+      - run: echo "${{ inputs.image_tag }}"
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+      
+      - name: terraform init
+        id: init  
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate
+      
+      - name: terraform plan
+        id: plan
+        run: terraform plan
+
+      - name: terraform destroy
+        id: apply
+        run: terraform destroy -auto-approve
+
+      
+

@@ -4,5 +4,5 @@ services:
     container_name: server
     image: "%s"
     ports:
-      - "80:7228"
+      - "80:80"
     restart: always

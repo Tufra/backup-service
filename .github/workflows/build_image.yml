@@ -20,7 +20,12 @@ on:
           type: string
 
         BUILD_CONTEXT:
-          description: Dockerhub username
+          description: Build context
+          required: true
+          type: string
+        
+        DOCKERFILE_LOCATION:
+          description: Dockerfile location
           required: true
           type: string
 
@@ -64,6 +69,7 @@ jobs:
           id: push
           with:
             context: ${{ inputs.BUILD_CONTEXT }}
+            dockerfile: ${{ inputs.DOCKERFILE_LOCATION }}
             push: true
             tags: ${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.IMAGE_NAME }}:${{ env.COMMIT_SHA }}
 

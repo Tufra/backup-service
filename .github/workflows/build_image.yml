@@ -15,6 +15,11 @@ on:
           type: string
 
         IMAGE_NAME:
+          description: Image name
+          required: true
+          type: string
+
+        BUILD_CONTEXT:
           description: Dockerhub username
           required: true
           type: string
@@ -58,7 +63,7 @@ jobs:
           uses: docker/build-push-action@v4
           id: push
           with:
-            context: ./sample-server
+            context: ${{ inputs.BUILD_CONTEXT }}
             push: true
             tags: ${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.IMAGE_NAME }}:${{ env.COMMIT_SHA }}
 

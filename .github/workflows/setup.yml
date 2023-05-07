@@ -9,6 +9,7 @@ jobs:
       COMMIT_SHA: ${{ github.sha }}
       DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
       IMAGE_NAME: ${{ vars.IMAGE_NAME }}
+      BUILD_CONTEXT: ${{ vars.BUILD_CONTEXT }}
     secrets: inherit
 
   apply-terraform:

@@ -69,7 +69,7 @@ jobs:
           id: push
           with:
             context: ${{ inputs.BUILD_CONTEXT }}
-            dockerfile: ${{ inputs.DOCKERFILE_LOCATION }}
+            file: ${{ inputs.DOCKERFILE_LOCATION }}
             push: true
             tags: ${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.IMAGE_NAME }}:${{ env.COMMIT_SHA }}
 

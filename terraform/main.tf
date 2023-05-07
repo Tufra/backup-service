@@ -56,7 +56,7 @@ resource "yandex_compute_instance" "main_vm" {
   resources {
     memory = 2
     cores = 2
-    core_fraction = 5
+    core_fraction = 20
   }
 
   network_interface {

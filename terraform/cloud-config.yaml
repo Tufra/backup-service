@@ -13,8 +13,6 @@ write_files:
       [FILTER]
           Name parser
           Match *.logs
-          Key_Name log
-          Parser app_log_parser
           Reserve_Data On
 
       [INPUT]

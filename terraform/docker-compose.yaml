@@ -6,6 +6,8 @@ services:
     restart: always
     environment:
       POSTGRES_PASSWORD: "%s"
+    depends_on:
+      - fluentbit
     ports:
       - "5432:5432"
     healthcheck:
@@ -38,8 +40,10 @@ services:
     image: "%s"
     depends_on:
       fluentbit:
+        condition: service_started
       db:
         condition: service_healthy
+        restart: true
     restart: always
     ports:
       - "80:80"

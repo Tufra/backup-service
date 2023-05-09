@@ -34,7 +34,7 @@ write_files:
       [OUTPUT]
           Name            yc-logging
           Match           *
-          group_id        default
+          group_id        %s
           message_key     text
           level_key       severity
           default_level   WARN

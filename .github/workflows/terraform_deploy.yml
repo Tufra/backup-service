@@ -44,6 +44,7 @@ env:
   TF_VAR_cloud_id: ${{ secrets.TF_VAR_CLOUD_ID }}
   TF_VAR_folder_id: ${{ secrets.TF_VAR_FOLDER_ID }}
   TF_VAR_subnet_id: ${{ secrets.TF_VAR_SUBNET_ID }}
+  TF_VAR_sa_id: ${{ secrets.TF_VAR_SA_ID }}
   TF_VAR_logging_group_id: ${{ secrets.TF_VAR_LOGGING_GROUP_ID }}
   TF_VAR_sa_key: ${{ secrets.TF_VAR_SA_KEY }}
   TF_VAR_ssh_key: ${{ secrets.TF_VAR_SSH_KEY }}

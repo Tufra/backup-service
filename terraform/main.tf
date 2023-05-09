@@ -22,6 +22,11 @@ variable "subnet_id" {
   sensitive = true
 }
 
+variable "sa_id" {
+  description = "service account id"
+  sensitive = true
+}
+
 variable "ssh_key" {
   description = "public ssh key"
   sensitive = true
@@ -57,6 +62,9 @@ provider "yandex" {
 resource "yandex_compute_instance" "main_vm" {
   name = "terraform1"
   platform_id = "standard-v2"
+
+  service_account_id = var.sa_id
+  allow_stopping_for_update = true
 
   boot_disk {
     initialize_params {

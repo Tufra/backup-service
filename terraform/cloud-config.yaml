@@ -12,7 +12,9 @@ write_files:
 
       [FILTER]
           Name parser
-          Match *.logs
+          Match app.logs
+          Key_Name log
+          Parser app_log_parser
           Reserve_Data On
 
       [INPUT]
@@ -33,11 +35,12 @@ write_files:
     path: /etc/fluentbit/fluentbit.conf
   - content: |
       [PARSER]
-          Name   log_parser
+          Name   app_log_parser
           Format regex
-          Regex  *
+          Regex  ^\[(?<severity>.*)\] (?<text>.*)$
+          Types  text:string
     path: /etc/fluentbit/parsers.conf
-    
+
 users:
   - name: yc-user
     sudo: ALL=(ALL) NOPASSWD:ALL

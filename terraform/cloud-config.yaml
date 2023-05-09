@@ -37,7 +37,7 @@ write_files:
           Format regex
           Regex  *
     path: /etc/fluentbit/parsers.conf
-  # ^\[req_id=(?<req_id>[0-9a-fA-F\-]+)\] \[(?<severity>.*)\] (?<code>\d+) (?<text>.*)$
+    
 users:
   - name: yc-user
     sudo: ALL=(ALL) NOPASSWD:ALL

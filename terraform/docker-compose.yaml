@@ -1,19 +1,6 @@
 version: '2.4'
 services:
 
-  fluentbit:
-      container_name: fluentbit
-      image: cr.yandex/yc/fluent-bit-plugin-yandex:v2.0.3-fluent-bit-1.6.10
-      ports:
-        - 24224:24224
-        - 24224:24224/udp
-      restart: always
-      environment:
-        YC_GROUP_ID: "%s"
-      volumes:
-        - /etc/fluentbit/fluentbit.conf:/fluent-bit/etc/fluent-bit.conf
-        - /etc/fluentbit/parsers.conf:/fluent-bit/etc/parsers.conf
-
   db:
     image: postgres
     restart: always
@@ -56,3 +43,16 @@ services:
       options:
         fluentd-address: localhost:24224
         tag: app.logs
+
+  fluentbit:
+      container_name: fluentbit
+      image: cr.yandex/yc/fluent-bit-plugin-yandex:v2.0.3-fluent-bit-1.6.10
+      ports:
+        - 24224:24224
+        - 24224:24224/udp
+      restart: always
+      environment:
+        YC_GROUP_ID: "%s"
+      volumes:
+        - /etc/fluentbit/fluentbit.conf:/fluent-bit/etc/fluent-bit.conf
+        - /etc/fluentbit/parsers.conf:/fluent-bit/etc/parsers.conf

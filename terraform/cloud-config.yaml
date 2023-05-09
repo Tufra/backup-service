@@ -37,7 +37,7 @@ write_files:
       [PARSER]
           Name   app_log_parser
           Format regex
-          Regex  ^\[(?<severity>.*)\] (?<text>.*)$
+          Regex  ^(?<text>.*)$
           Types  text:string
     path: /etc/fluentbit/parsers.conf
 

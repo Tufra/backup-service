@@ -80,8 +80,8 @@ resource "yandex_compute_instance" "main_vm" {
   }
 
   metadata = {
-    docker-compose = format(file("${path.module}/docker-compose.yaml"), var.postgres_password, var.logging_group_id, var.image_tag)
-    user-data = format(file("${path.module}/cloud-config.yaml"), var.ssh_key, var.logging_group_id)
+    docker-compose = format(file("${path.module}/docker-compose.yaml"),var.logging_group_id, var.postgres_password, var.image_tag)
+    user-data = format(file("${path.module}/cloud-config.yaml"), var.logging_group_id, var.ssh_key)
   }
 }
 

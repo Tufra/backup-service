@@ -1,13 +1,6 @@
 #cloud-config
 ssh_pwauth: no
 
-users:
-  - name: yc-user
-    sudo: ALL=(ALL) NOPASSWD:ALL
-    shell: /bin/bash
-    ssh_authorized_keys:
-      - "%s"
-
 write_files:
   - content: |
       [SERVICE]
@@ -47,3 +40,10 @@ write_files:
           Regex  ^\[req_id=(?<req_id>[0-9a-fA-F\-]+)\] \[(?<severity>.*)\] (?<code>\d+) (?<text>.*)$
           Types  code:integer
     path: /etc/fluentbit/parsers.conf
+  
+users:
+  - name: yc-user
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - "%s"

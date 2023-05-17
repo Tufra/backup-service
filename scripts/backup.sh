@@ -10,7 +10,7 @@ CRON_TIMESPEC="{3}" # "0 12 * * *" replace
 SCRIPT_NAME=$(basename -- "$0")
 SCRIPT_PATH=$(dirname -- "$0")
 SUBMIT_URL="{4}" # "localhost" replace
-TRANSFER_FILE={5} # false replace
+TRANSFER_FILE={5} # true replace
 KEEP_FILE={6} # true replace
 
 

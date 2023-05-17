@@ -129,31 +129,27 @@
             Last backups
         </h3>
 
-        @*@foreach (var backupInfo in Model.ListBackupsInfo)
-            {*@
+        @foreach (var backupInfo in Model.ListBackupsInfo)
+            {
         <div class="d-flex pt-3">
             <div class="pb-2 lh-sm mb-0 w-100 border-bottom">
                 <div class="d-flex justify-content-between">
-                    @*@backupInfo.Name
+                    <div class="row">
+                        <div class="font last-backup col-xl-8 col-lg-8 col-md-8 col-md-6 col-sm-6 col-xs-6">
+                            @backupInfo.Name
+                        </div>
+                        <div class="font last-backup col-xl-2 col-lg-2 col-md-2 col-md-3 col-sm-3 col-xs-3">
+                            @backupInfo.Created
+                        </div>
                         <form method="post" asp-page-handler="DownloadBackupFile">
                             <input type="hidden" name="backupId" value="@backupInfo.Id" />
                             <button type="submit" class="btn btn-primary">Download</button>
-                        </form>*@
-                    <div class="row">
-                        <div class="font last-backup col-xl-8 col-lg-8 col-md-8 col-md-6 col-sm-6 col-xs-6">
-                            Name
-                        </div>
-                        <div class="font last-backup col-xl-2 col-lg-2 col-md-2 col-md-3 col-sm-3 col-xs-3">
-                            Date
-                        </div>
-                        <div class="col-xl-2 col-lg-2 col-md-2 col-md-3 col-sm-3 col-xs-3">
-                            <button type="submit" class="btn btn-primary">Download</button>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-        @*}*@
+        }
 
     </div>
 </main>

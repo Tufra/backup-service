@@ -11,6 +11,8 @@ SCRIPT_NAME=$(basename -- "$0")
 SCRIPT_PATH=$(dirname -- "$0")
 SUBMIT_URL="{4}" # "localhost" replace
 TRANSFER_FILE={5} # false replace
+KEEP_FILE={6} # true replace
+
 
 if [ -n "$1" ]
 then
@@ -24,7 +26,12 @@ tar -zcvf "$FULL_DEST_PATH" "$SOURCE_PATH"
 
 if [ $TRANSFER_FILE ]
 then
-    curl -i -X POST -H "Content-Type: multipart/form-data" -F "data=@$FULLDEST_PATH" $SUBMIT_URL
+    curl -i -X POST -H "Content-Type: multipart/form-data" -F "data=@$FULL_DEST_PATH" $SUBMIT_URL
+
+    if [ -n $KEEP_FILE ]
+    then
+        rm "$FULL_DEST_PATH"
+    fi
 fi
 
 if [ $SET_CRONJOB ]

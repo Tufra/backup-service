@@ -3,7 +3,7 @@
 BACKUP_NAME="{0}" # "test" replace
 SOURCE_PATH="{1}" # "~/test" replace
 DEST_PATH="{2}" # "." replace
-FILENAME="${BACKUP_NAME}_backup_$(date +"%d-%m-%Y").tar.gz"
+FILENAME="${{BACKUP_NAME}}_backup_$(date +"%%d-%%m-%%Y").tar.gz"
 SET_CRONJOB=0 # true replace
 FULL_DEST_PATH="$DEST_PATH/$FILENAME"
 CRON_TIMESPEC="{3}" # "0 12 * * *" replace
@@ -28,9 +28,9 @@ res=$?
 
 if [ $res -eq 0 ]
 then
-    echo "$(date +'[ %Y-%m-%d %H:%M ]') $BACKUP_NAME: backup created: $FULL_DEST_PATH" >> "$LOG_FILE"
+    echo "$(date +'[ %%Y-%%m-%%d %%H:%%M ]') $BACKUP_NAME: backup created: $FULL_DEST_PATH" >> "$LOG_FILE"
 else
-    echo "$(date +'[ %Y-%m-%d %H:%M ]') $BACKUP_NAME: backup failed" >> "$LOG_FILE"
+    echo "$(date +'[ %%Y-%%m-%%d %%H:%%M ]') $BACKUP_NAME: backup failed" >> "$LOG_FILE"
 fi
 
 if [ $TRANSFER_FILE ]
@@ -40,20 +40,20 @@ then
 
     if [ $res -eq 0 ]
     then
-	echo "$(date +'[ %Y-%m-%d %H:%M ]') $BACKUP_NAME: file send success" >> "$LOG_FILE"
+	echo "$(date +'[ %%Y-%%m-%%d %%H:%%M ]') $BACKUP_NAME: file send success" >> "$LOG_FILE"
     else
-	echo "$(date +'[ %Y-%m-%d %H:%M ]') $BACKUP_NAME: file send failed" >> "$LOG_FILE"
+	echo "$(date +'[ %%Y-%%m-%%d %%H:%%M ]') $BACKUP_NAME: file send failed" >> "$LOG_FILE"
     fi
 
     if [ $KEEP_FILE -eq 1 ]
     then
         rm "$FULL_DEST_PATH"
-	echo "$(date +'[ %Y-%m-%d %H:%M ]') $BACKUP_NAME: backup file removed" >> "$LOG_FILE"
+	echo "$(date +'[ %%Y-%%m-%%d %%H:%%M ]') $BACKUP_NAME: backup file removed" >> "$LOG_FILE"
     fi
 fi
 
 if [ $SET_CRONJOB -eq 0 ]
 then
     (crontab -l 2>/dev/null; echo "$CRON_TIMESPEC sh '$SCRIPT_PATH/$SCRIPT_NAME' -c ") | crontab -
-    echo "$(date +'[ %Y-%m-%d %H:%M ]') $BACKUP_NAME: cron job set at $CRON_TIMESPEC" >> "$LOG_FILE"
+    echo "$(date +'[ %%Y-%%m-%%d %%H:%%M ]') $BACKUP_NAME: cron job set at $CRON_TIMESPEC" >> "$LOG_FILE"
 fi

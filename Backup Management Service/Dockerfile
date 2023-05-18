@@ -18,6 +18,6 @@ RUN dotnet publish "Backup Management Service.csproj" -c Development -o /app/pub
 
 FROM base AS final
 WORKDIR /app
-COPY ["./Backup Management Service/Bash script samples", "."]
+COPY ["./Backup Management Service/Bash script samples", "./Bash script samples""]
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Backup Management Service.dll"]

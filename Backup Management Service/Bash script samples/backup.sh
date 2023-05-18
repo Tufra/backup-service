@@ -3,7 +3,7 @@
 BACKUP_NAME="{0}" # "test" replace
 SOURCE_PATH="{1}" # "~/test" replace
 DEST_PATH="{2}" # "." replace
-FILENAME="${BACKUP_NAME}_backup_$(date +"%d-%m-%Y").tar.gz"
+FILENAME="${{BACKUP_NAME}}_backup_$(date +"%%d-%%m-%%Y").tar.gz"
 SET_CRONJOB=true
 FULL_DEST_PATH="$DEST_PATH/$FILENAME"
 CRON_TIMESPEC="{3}" # "0 12 * * *" replace

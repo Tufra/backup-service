@@ -37,13 +37,13 @@
 
         <form method="post" asp-page-handler="GenerateScript">
             <div>
-                <input type="text" class="in" placeholder="Title...">
+                <input asp-for="@Model.CreateBackupRequest.BackupName" type="text" class="in" placeholder="Title...">
             </div>
             <div>
-                <input type="text" class="in" placeholder="Source path...">
+                <input asp-for="@Model.CreateBackupRequest.UserLocalPath" type="text" class="in" placeholder="Source path...">
             </div>
             <div>
-                <input type="text" class="in" placeholder="Destination path...">
+                <input asp-for="@Model.CreateBackupRequest.UserBackupStoragePath" type="text" class="in" placeholder="Destination path...">
             </div>
 
             <div class="cron-form">

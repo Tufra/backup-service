@@ -9,7 +9,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-6 col-sm-6 col-xs-6 title">
-                    <h3 class="font">BACKUP</h3>
+                    <h3 class="font back">BACKUP</h3>
                 </div>
                 <div class="col-xl-6 col-lg-6 col-md-6 col-md-6 col-sm-6 col-xs-6">
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6"></div>
@@ -29,12 +29,22 @@
 </header>
 
 <main class="container">
+
+
+
     <div class="create_backup font">
         <h1>Create Backup</h1>
 
         <form method="post" asp-page-handler="GenerateScript">
-
-            <input type="text">
+            <div>
+                <input type="text" class="in" placeholder="Title...">
+            </div>
+            <div>
+                <input type="text" class="in" placeholder="Source path...">
+            </div>
+            <div>
+                <input type="text" class="in" placeholder="Destination path...">
+            </div>
 
             <div class="cron-form">
                 <div class="cron-form__row">
@@ -130,26 +140,19 @@
         </h3>
 
         @foreach (var backupInfo in Model.ListBackupsInfo)
-            {
-        <div class="d-flex pt-3">
-            <div class="pb-2 lh-sm mb-0 w-100 border-bottom">
-                <div class="d-flex justify-content-between">
-                    <div class="row">
-                        <div class="font last-backup col-xl-8 col-lg-8 col-md-8 col-md-6 col-sm-6 col-xs-6">
-                            @backupInfo.Name
-                        </div>
-                        <div class="font last-backup col-xl-2 col-lg-2 col-md-2 col-md-3 col-sm-3 col-xs-3">
-                            @backupInfo.Created
-                        </div>
-                        <form method="post" asp-page-handler="DownloadBackupFile">
-                            <input type="hidden" name="backupId" value="@backupInfo.Id" />
-                            <button type="submit" class="btn btn-primary">Download</button>
-                        </form>
-                    </div>
-                </div>
+        {
+        <div class="row">
+            <div class="font last-backup col-xl-7 col-lg-7 col-md-7 col-md-6 col-sm-6 col-xs-6">
+                @backupInfo.Name
             </div>
+            <div class="font last-backup col-xl-3 col-lg-3 col-md-3 col-md-3 col-sm-3 col-xs-3">
+                @backupInfo.Created
+            </div>
+            <form method="post" asp-page-handler="DownloadBackupFile">
+                <input type="hidden" name="backupId" value="@backupInfo.Id" />
+                <button type="submit" class="btn btn-primary">Download</button>
+            </form>
         </div>
         }
-
     </div>
 </main>

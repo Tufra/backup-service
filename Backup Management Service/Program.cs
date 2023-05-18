@@ -25,9 +25,9 @@ var app = builder.Build();
 
 #region Migrations applying
 
-/*using var scope = app.Services.CreateScope();
+using var scope = app.Services.CreateScope();
 var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
-await dbContext.Database.MigrateAsync();*/
+await dbContext.Database.MigrateAsync();
 
 #endregion
 

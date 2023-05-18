@@ -47,6 +47,11 @@ variable "postgres_password" {
   sensitive = true
 }
 
+variable "postgres_user" {
+  description = "postgresql user"
+  sensitive = true
+}
+
 variable "logging_group_id" {
   description = "cloud logging group id"
   sensitive = true
@@ -88,7 +93,7 @@ resource "yandex_compute_instance" "main_vm" {
   }
 
   metadata = {
-    docker-compose = format(file("${path.module}/docker-compose.yaml"), var.postgres_password, var.image_tag, var.logging_group_id)
+    docker-compose = format(file("${path.module}/docker-compose.yaml"), var.postgres_password, var.image_tag, var.postgres_user, var.postgres_password, var.logging_group_id)
     user-data = format(file("${path.module}/cloud-config.yaml"), var.logging_group_id, var.ssh_key)
   }
 }

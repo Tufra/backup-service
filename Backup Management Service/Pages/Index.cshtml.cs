@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.StaticFiles;
+using System.Text;
 
 namespace Backup_Management_Service.Pages
 {
@@ -14,15 +15,17 @@ namespace Backup_Management_Service.Pages
     public class IndexModel : PageModel
     {
         private readonly ApplicationContext _dbContext;
+        private readonly ScriptHelper _scriptHelper;
 
-        public List<BackupInfo> ListBackupsInfo { get; set; }
+        public List<BackupInfo> ListBackupsInfo { get; set; } = null!;
 
         [BindProperty]
-        public BackupScriptGenerationRequest CreateBackupRequest { get; set; }
+        public BackupScriptGenerationRequest CreateBackupRequest { get; set; } = new();
 
-        public IndexModel(ApplicationContext dbContext, IWebHostEnvironment hostingEnvironment)
+        public IndexModel(ApplicationContext dbContext, ScriptHelper scriptHelper)
         {
             _dbContext = dbContext;
+            _scriptHelper = scriptHelper;
         }
 
         public async Task OnGet()
@@ -36,16 +39,18 @@ namespace Backup_Management_Service.Pages
             return backups;
         }
 
-        public async Task<IActionResult> OnPostCreateBackUp()
+        public async Task<IActionResult> OnPostGenerateScript()
         {
-            GenerateScript();
-            return Redirect("./");
+            CreateBackupRequest.UserId = Guid.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var scriptContent = await _scriptHelper.GenerateBackupScript(CreateBackupRequest, HttpContext.Request.Host.Value);
+
+            var byteArray = Encoding.UTF8.GetBytes(scriptContent);
+            var fileName = "script.sh";
+            var contentType = "text/plain";
+
+            return File(byteArray, contentType, fileName);
         }
-        public string GenerateScript()
-        {
-            CreateBackupRequest.UserId = Guid.Parse( HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-            return ScriptHelper.GenerateBackupScript(CreateBackupRequest);
-        }
+        
 
         public async Task<IActionResult> OnPostDownloadBackupFile(Guid backupId)
         {

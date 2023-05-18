@@ -32,7 +32,7 @@
     <div class="create_backup font">
         <h1>Create Backup</h1>
 
-        <form method="post" asp-page-handler="CreateBackUp">
+        <form method="post" asp-page-handler="GenerateScript">
 
             <input type="text">
 
@@ -40,7 +40,7 @@
                 <div class="cron-form__row">
                     <label for="cron-minute">Minute</label>
                     <div class="cron-form__field">
-                        <select id="cron-minute" asp-for="@Model.CreateBackupRequest.Cron_Minute">
+                        <select id="cron-minute" asp-for="@Model.CreateBackupRequest.CronMinute">
                             <option value="*">Every minute</option>
                             <option value="*/5">Every 5 minutes</option>
                             <option value="*/10">Every 10 minutes</option>
@@ -56,7 +56,7 @@
                 <div class="cron-form__row">
                     <label for="cron-hour">Hour</label>
                     <div class="cron-form__field">
-                        <select id="cron-hour" asp-for="@Model.CreateBackupRequest.Cron_Hour">
+                        <select id="cron-hour" asp-for="@Model.CreateBackupRequest.CronHour">
                             <option value="*">Every hour</option>
                             <option value="*/2">Every 2 hours</option>
                             <option value="*/3">Every 3 hours</option>
@@ -73,7 +73,7 @@
                 <div class="cron-form__row">
                     <label for="cron-day">Day of month</label>
                     <div class="cron-form__field">
-                        <select id="cron-day" asp-for="@Model.CreateBackupRequest.Cron_Day">
+                        <select id="cron-day" asp-for="@Model.CreateBackupRequest.CronDay">
                             <option value="*">Every day</option>
                             <option value="*/2">Every second day</option>
                             <option value="*/3">Every third day</option>
@@ -89,7 +89,7 @@
                 <div class="cron-form__row">
                     <label for="cron-month">Month</label>
                     <div class="cron-form__field">
-                        <select id="cron-month" asp-for="@Model.CreateBackupRequest.Cron_Month">
+                        <select id="cron-month" asp-for="@Model.CreateBackupRequest.CronMonth">
                             <option value="*">Every month</option>
                             <option value="*/2">Every second month</option>
                             <option value="1-11/2">Every odd month</option>
@@ -102,7 +102,7 @@
                 <div class="cron-form__row">
                     <label for="cron-dow">Day of the week</label>
                     <div class="cron-form__field">
-                        <select id="cron-dow" asp-for="@Model.CreateBackupRequest.Cron_WeekDay">
+                        <select id="cron-dow" asp-for="@Model.CreateBackupRequest.CronWeekDay">
                             <option value="*">Every day</option>
                             <option value="1-5">Weekdays (Mon-Fri)</option>
                             <option value="0,6">Weekends (Sun, Sat)</option>

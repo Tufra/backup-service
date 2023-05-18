@@ -1,5 +1,5 @@
 using Backup_Management_Service;
-
+using Backup_Management_Service.Helper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,13 +19,15 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<ScriptHelper, ScriptHelper>();
+
 var app = builder.Build();
 
 #region Migrations applying
 
-using var scope = app.Services.CreateScope();
+/*using var scope = app.Services.CreateScope();
 var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
-await dbContext.Database.MigrateAsync();
+await dbContext.Database.MigrateAsync();*/
 
 #endregion
 

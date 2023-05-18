@@ -35,14 +35,14 @@ namespace Backup_Management_Service.Pages
             return backups;
         }
 
-        public async Task OnPost(BackupScriptGenerationRequest request)
+        /*public async Task OnPost(BackupScriptGenerationRequest request)
         {
             GenerateScript(request);
-        }
-        public string GenerateScript(BackupScriptGenerationRequest request)
+        }*/
+        /*public string GenerateScript(BackupScriptGenerationRequest request)
         {
             return ScriptHelper.GenerateBackupScript(request);
-        }
+        }*/
 
         public void GetBackupFile(Guid backupId)
         {

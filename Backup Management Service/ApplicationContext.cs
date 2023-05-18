@@ -7,8 +7,8 @@ namespace Backup_Management_Service;
 
 public class ApplicationContext : DbContext
 {
-    public DbSet<User> Users { get; set; }
-    public DbSet<BackupInfo> BackupsInfo { get; set; }
+    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<BackupInfo> BackupsInfo { get; set; } = null!;
 
     public ApplicationContext(DbContextOptions options) : base(options)
     {

@@ -1,13 +1,28 @@
 ﻿using Backup_Management_Service.Request;
+using Flurl;
 
 namespace Backup_Management_Service.Helper
 {
     public class ScriptHelper
     {
-        public static string GenerateBackupScript(BackupScriptGenerationRequest request)
+        private readonly string _scriptFilePath;
+
+        public ScriptHelper(IWebHostEnvironment env)
         {
-            //todo
-            return "";
+            _scriptFilePath = Path.Combine(env.ContentRootPath, "Bash script samples", "backup.sh");
+        }
+
+        public async Task<string> GenerateBackupScript(BackupScriptGenerationRequest request, string rootUrl)
+        {
+            var fileContent = await File.ReadAllTextAsync(_scriptFilePath);
+            var controllerUrl = rootUrl
+                .AppendPathSegments("api", "backup", "upload")
+                .SetQueryParam(nameof(request.UserId), request.UserId);
+
+            fileContent = string.Format(fileContent, request.BackupName, request.UserLocalPath,
+                request.UserBackupStoragePath, request.CronExpression, controllerUrl, request.TransferFile ? "0":"1", request.KeepFile ? "0": "1");
+
+            return fileContent;
         }
     }
 }

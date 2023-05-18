@@ -49,3 +49,5 @@ UpgradeLog.htm
 .idea
 mono_crash.*.json
 mono_crash.*.blob
+
+Backup Management Service/User_backups

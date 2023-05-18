@@ -40,7 +40,7 @@ services:
         condition: service_healthy
     restart: always
     volumes:
-      - file-data:/etc/data
+      - file-data:/app/User_backups
     ports:
       - "80:80"
     logging:

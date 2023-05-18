@@ -30,9 +30,8 @@ services:
   main_app:
     container_name: server
     image: "%s"
-    environment:
-      - PG_USER=%s
-      - PG_PASS=%s
+    environment: 
+      - ConnectionStrings__Default=Host=db;Port=5432;Database=backupservice;Username=%s;Password=%s;
     depends_on:
       fluentbit:
         condition: service_started

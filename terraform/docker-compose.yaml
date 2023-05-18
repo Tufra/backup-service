@@ -39,6 +39,8 @@ services:
       db:
         condition: service_healthy
     restart: always
+    volumes:
+      - file-data:/etc/data
     ports:
       - "80:80"
     logging:
@@ -59,3 +61,6 @@ services:
       volumes:
         - /etc/fluentbit/fluentbit.conf:/fluent-bit/etc/fluent-bit.conf
         - /etc/fluentbit/parsers.conf:/fluent-bit/etc/parsers.conf
+
+volumes:
+  file-data:

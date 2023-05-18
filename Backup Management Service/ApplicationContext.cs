@@ -12,9 +12,7 @@ public class ApplicationContext : DbContext
 
     public ApplicationContext(DbContextOptions options) : base(options)
     {
-        //Database shouldn't be migrated automatically on Development
-        // if (!Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!.Equals("Development"))
-            Database.Migrate();
+       
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

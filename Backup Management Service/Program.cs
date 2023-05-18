@@ -21,6 +21,14 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+#region Migrations applying
+
+using var scope = app.Services.CreateScope();
+var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+await dbContext.Database.MigrateAsync();
+
+#endregion
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

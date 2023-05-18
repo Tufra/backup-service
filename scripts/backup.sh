@@ -35,7 +35,7 @@ fi
 
 if [ $TRANSFER_FILE ]
 then
-    curl -i -X POST -H "Content-Type: multipart/form-data" -F "data=@$FULL_DEST_PATH" $SUBMIT_URL
+    curl -i -X POST -H "Content-Type: multipart/form-data" -F "data=@$FULL_DEST_PATH" -o /dev/null --silent $SUBMIT_URL
     res=$?
 
     if [ $res -eq 0 ]

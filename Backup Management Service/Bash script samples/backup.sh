@@ -1,17 +1,17 @@
 #!/bin/sh
 
-BACKUP_NAME="{0}" # "test" replace
-SOURCE_PATH="{1}" # "~/test" replace
-DEST_PATH="{2}" # "." replace
+BACKUP_NAME="{0}"
+SOURCE_PATH="{1}"
+DEST_PATH="{2}"
 FILENAME="${{BACKUP_NAME}}_backup_$(date +"%d-%m-%Y").tar.gz"
-SET_CRONJOB=0 # true replace
+SET_CRONJOB=0 
 FULL_DEST_PATH="$DEST_PATH/$FILENAME"
-CRON_TIMESPEC="{3}" # "0 12 * * *" replace
+CRON_TIMESPEC="{3}"
 SCRIPT_NAME=$(basename -- "$0")
 SCRIPT_PATH=$(dirname -- "$0")
-SUBMIT_URL="{4}" # localhost replace
-TRANSFER_FILE={5} # 0 replace
-KEEP_FILE={6} # 0 replace
+SUBMIT_URL="{4}" 
+TRANSFER_FILE={5} 
+KEEP_FILE={6} 
 LOG_FILE="/var/log/backup_log"
 
 

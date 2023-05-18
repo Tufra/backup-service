@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Backup_Management_Service.Common;
 
 namespace Backup_Management_Service.Request
@@ -7,20 +8,22 @@ namespace Backup_Management_Service.Request
     {
         public Guid UserId { get; set; }
 
-        [Required] 
-        public string BackupName { get; set; } = null!;
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Empty backup name")]
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string BackupName { get; set; } = "";
 
         /// <summary>
         /// Где находится то, что нужно сохранить
         /// </summary>
-        [Required]
-        public string UserLocalPath { get; set; } = null!;
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Empty source path")]
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string UserLocalPath { get; set; } = "";
 
         /// <summary>
         /// Куда сохранить созданный бэкап
         /// </summary>
-        [Required]
-        public string UserBackupStoragePath { get; set; } = null!;
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string UserBackupStoragePath { get; set; } = "";
 
         /// <value>
         /// Каждый час по умолчанию

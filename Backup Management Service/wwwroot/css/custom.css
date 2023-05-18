@@ -2,6 +2,11 @@ div {
     display: block;
 }
 
+.back {
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
 .font {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     color: black;
@@ -9,13 +14,13 @@ div {
 
 a:visited {
     color: black;
-    text-decoration: none!important;
+    text-decoration: none !important;
 }
 
-.container {
+.container-fluid {
     margin: 0;
     padding: 0;
-    max-width: auto;
+    max-width: 100%;
 }
 
 .pb-3 {
@@ -32,7 +37,6 @@ a:visited {
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    
 }
 
 .title {
@@ -46,8 +50,13 @@ a:visited {
     color: black;
     font-size: 20px;
     vertical-align: middle;
-    margin-top: 25px;
+    margin-top: 15px;
     text-decoration: none !important;
+    justify-content: center;
+}
+
+.in {
+    margin-bottom: 10px;
 }
 
 .last-backup {
@@ -65,7 +74,7 @@ a:visited {
 }
 
 .btn-primary {
-    margin-top: 20px;
+    margin-top: 15px;
     background-color: var(--color-primary);
     color: black;
 }
@@ -84,4 +93,28 @@ a:visited {
 
 :root {
     --color-primary: #88b77b;
+}
+
+.card-body {
+    border: 1px solid rgba(0,0,0,0.25);
+    border-radius: 10px;
+    padding: 20px;
+    padding-bottom: 30px;
+}
+
+.justify-content-center {
+    margin: 10% 25% 0 25%;
+    width: 85%;
+}
+
+.justify-content-end {
+    text-align: right;
+}
+
+.mb-5 {
+    margin-bottom: 20px;
+}
+
+.mb-4 {
+    margin-bottom: 15px;
 }

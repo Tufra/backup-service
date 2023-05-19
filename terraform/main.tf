@@ -22,6 +22,11 @@ variable "subnet_id" {
   sensitive = true
 }
 
+variable "sa_id" {
+  description = "service account id"
+  sensitive = true
+}
+
 variable "ssh_key" {
   description = "public ssh key"
   sensitive = true
@@ -42,6 +47,15 @@ variable "postgres_password" {
   sensitive = true
 }
 
+variable "postgres_user" {
+  description = "postgresql user"
+  sensitive = true
+}
+
+variable "logging_group_id" {
+  description = "cloud logging group id"
+  sensitive = true
+}
 
 provider "yandex" {
   zone = "ru-central1-b"
@@ -54,6 +68,9 @@ resource "yandex_compute_instance" "main_vm" {
   name = "terraform1"
   platform_id = "standard-v2"
 
+  service_account_id = var.sa_id
+  allow_stopping_for_update = true
+
   boot_disk {
     initialize_params {
       image_id = data.yandex_compute_image.container-optimized-image.id
@@ -63,7 +80,7 @@ resource "yandex_compute_instance" "main_vm" {
   resources {
     memory = 2
     cores = 2
-    core_fraction = 5
+    core_fraction = 20
   }
 
   network_interface {
@@ -76,8 +93,8 @@ resource "yandex_compute_instance" "main_vm" {
   }
 
   metadata = {
-    docker-compose = format(file("${path.module}/docker-compose.yaml"), var.postgres_password, var.image_tag)
-    user-data = format(file("${path.module}/cloud-config.yaml"), var.ssh_key)
+    docker-compose = format(file("${path.module}/docker-compose.yaml"), var.postgres_password, var.image_tag, var.postgres_user, var.postgres_password, var.logging_group_id)
+    user-data = format(file("${path.module}/cloud-config.yaml"), var.logging_group_id, var.ssh_key)
   }
 }
 

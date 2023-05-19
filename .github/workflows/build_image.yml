@@ -14,6 +14,21 @@ on:
           required: true
           type: string
 
+        IMAGE_NAME:
+          description: Image name
+          required: true
+          type: string
+
+        BUILD_CONTEXT:
+          description: Build context
+          required: true
+          type: string
+        
+        DOCKERFILE_LOCATION:
+          description: Dockerfile location
+          required: true
+          type: string
+
       secrets:
         DOCKERHUB_TOKEN:
           description: Dockerhub token
@@ -35,7 +50,7 @@ jobs:
     build:
       runs-on: ubuntu-latest
       outputs:
-        image_tag: ${{ inputs.DOCKERHUB_USERNAME }}/sampleserver:${{ env.COMMIT_SHA }}
+        image_tag: ${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.IMAGE_NAME }}:${{ env.COMMIT_SHA }}
       steps:
         - name: Checkout
           uses: actions/checkout@v3
@@ -53,8 +68,9 @@ jobs:
           uses: docker/build-push-action@v4
           id: push
           with:
-            context: ./sample-server
+            context: ${{ inputs.BUILD_CONTEXT }}
+            file: ${{ inputs.DOCKERFILE_LOCATION }}
             push: true
-            tags: ${{ inputs.DOCKERHUB_USERNAME }}/sampleserver:${{ env.COMMIT_SHA }}
+            tags: ${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.IMAGE_NAME }}:${{ env.COMMIT_SHA }}
 
 

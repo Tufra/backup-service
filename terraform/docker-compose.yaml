@@ -6,8 +6,15 @@ services:
     restart: always
     environment:
       POSTGRES_PASSWORD: "%s"
+    depends_on:
+      - fluentbit
     ports:
       - "5432:5432"
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:24224
+        tag: db.logs
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -23,9 +30,36 @@ services:
   main_app:
     container_name: server
     image: "%s"
+    environment: 
+      - ConnectionStrings__Default=Host=db;Port=5432;Database=backupservice;Username=%s;Password=%s;
     depends_on:
+      fluentbit:
+        condition: service_started
       db:
         condition: service_healthy
     restart: always
+    volumes:
+      - file-data:/app/User_backups
     ports:
       - "80:80"
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:24224
+        tag: app.logs
+
+  fluentbit:
+      container_name: fluentbit
+      image: cr.yandex/yc/fluent-bit-plugin-yandex:v2.0.3-fluent-bit-1.6.10
+      ports:
+        - 24224:24224
+        - 24224:24224/udp
+      restart: always
+      environment:
+        YC_GROUP_ID: "%s"
+      volumes:
+        - /etc/fluentbit/fluentbit.conf:/fluent-bit/etc/fluent-bit.conf
+        - /etc/fluentbit/parsers.conf:/fluent-bit/etc/parsers.conf
+
+volumes:
+  file-data:

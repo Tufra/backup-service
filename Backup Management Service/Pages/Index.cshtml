@@ -1,0 +1,191 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<header>
+    <div class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6 col-sm-6 col-xs-6 title">
+                    <h3 class="font back">BACKUP</h3>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6"></div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+    <div class="create_backup font">
+        <h1>Create Backup</h1>
+
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+        <form method="post" asp-page-handler="GenerateScript">
+            <div>
+                <input asp-for="@Model.CreateBackupRequest.BackupName" type="text" class="in" placeholder="Name">
+                @Html.LabelFor(model=> model.CreateBackupRequest.BackupName, "Backup name. Will be displayed in the list")
+            </div>
+            <div>
+                <input asp-for="@Model.CreateBackupRequest.UserLocalPath" type="text" class="in" placeholder="Source path">
+                @Html.LabelFor(model=> model.CreateBackupRequest.UserLocalPath, "Specify path to the folder to be backed up")
+            </div>
+            <div>
+                @Html.LabelFor(model => model.CreateBackupRequest.KeepFile, "Should the backup be saved on your PC. If yes, then specify the absolute path in the \"Destination path\"")
+                @Html.EditorFor(model => model.CreateBackupRequest.KeepFile)
+            </div>
+            <div id="CreateBackupRequest_UserBackupStoragePath_div">
+                <input asp-for="@Model.CreateBackupRequest.UserBackupStoragePath" type="text" class="in" placeholder="Destination path">
+                @Html.LabelFor(model => model.CreateBackupRequest.UserBackupStoragePath,"Where should the backup be saved on your PC")
+            </div>
+            <div>
+                @Html.LabelFor(model => model.CreateBackupRequest.TransferFile, "Should the backup be sent to server")
+                @Html.EditorFor(model => model.CreateBackupRequest.TransferFile)
+            </div>
+
+            <br />
+            <br />
+            <br />
+
+            <div>
+                @Html.LabelFor(model => model.CreateBackupRequest.SetCronJob, "Should cron job be set for periodic backup sending")
+                @Html.EditorFor(model => model.CreateBackupRequest.SetCronJob)
+            </div>
+
+            <div id="cron-form" class="cron-form">
+                @Html.Label("The frequency of sending a backup:")
+                <div class="cron-form__row">
+                    <label for="cron-minute">Minute</label>
+                    <div class="cron-form__field">
+                        <select id="cron-minute" asp-for="@Model.CreateBackupRequest.CronMinute">
+                            <option value="*">Every minute</option>
+                            <option value="*/5">Every 5 minutes</option>
+                            <option value="*/10">Every 10 minutes</option>
+                            <option value="*/15">Every 15 minutes</option>
+                            <option value="*/30">Every 30 minutes</option>
+                            <option value="0">Only at minute 0</option>
+                            <option value="15">Only at minute 15</option>
+                            <option value="30">Only at minute 30</option>
+                            <option value="45">Only at minute 45</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="cron-form__row">
+                    <label for="cron-hour">Hour</label>
+                    <div class="cron-form__field">
+                        <select id="cron-hour" asp-for="@Model.CreateBackupRequest.CronHour">
+                            <option value="*">Every hour</option>
+                            <option value="*/2">Every 2 hours</option>
+                            <option value="*/3">Every 3 hours</option>
+                            <option value="*/4">Every 4 hours</option>
+                            <option value="*/6">Every 6 hours</option>
+                            <option value="*/12">Every 12 hours</option>
+                            <option value="0">Only at hour 0</option>
+                            <option value="6">Only at hour 6</option>
+                            <option value="12">Only at hour 12</option>
+                            <option value="18">Only at hour 18</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="cron-form__row">
+                    <label for="cron-day">Day of month</label>
+                    <div class="cron-form__field">
+                        <select id="cron-day" asp-for="@Model.CreateBackupRequest.CronDay">
+                            <option value="*">Every day</option>
+                            <option value="*/2">Every second day</option>
+                            <option value="*/3">Every third day</option>
+                            <option value="*/4">Every fourth day</option>
+                            <option value="*/5">Every fifth day</option>
+                            <option value="*/7">Every seventh day</option>
+                            <option value="1">Only on the first day of the month</option>
+                            <option value="15">Only on the 15th day of the month</option>
+                            <option value="31">Only on the 31st day of the month</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="cron-form__row">
+                    <label for="cron-month">Month</label>
+                    <div class="cron-form__field">
+                        <select id="cron-month" asp-for="@Model.CreateBackupRequest.CronMonth">
+                            <option value="*">Every month</option>
+                            <option value="*/2">Every second month</option>
+                            <option value="1-11/2">Every odd month</option>
+                            <option value="2-12/2">Every even month</option>
+                            <option value="*/3">Every 3 months</option>
+                            <option value="*/6">Every 6 months</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="cron-form__row">
+                    <label for="cron-dow">Day of the week</label>
+                    <div class="cron-form__field">
+                        <select id="cron-dow" asp-for="@Model.CreateBackupRequest.CronWeekDay">
+                            <option value="*">Every day</option>
+                            <option value="1-5">Weekdays (Mon-Fri)</option>
+                            <option value="0,6">Weekends (Sun, Sat)</option>
+                            <option value="0">Sunday</option>
+                            <option value="1">Monday</option>
+                            <option value="2">Tuesday</option>
+                            <option value="3">Wednesday</option>
+                            <option value="4">Thursday</option>
+                            <option value="5">Friday</option>
+                            <option value="6">Saturday</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <input class="btn btn-primary" type="submit" value="Submit">
+            </div>
+        </form>
+    </div>
+
+    <div class="p-3 rounded shadow-sm">
+        <h3 class="border-bottom pb-1 font">
+            Last backups
+        </h3>
+
+        @foreach (var backupInfo in Model.ListBackupsInfo)
+        {
+            <div class="row">
+                <div class="font last-backup col-xl-7 col-lg-7 col-md-7 col-md-6 col-sm-6 col-xs-6">
+                    @backupInfo.Name
+                </div>
+                <div class="font last-backup col-xl-3 col-lg-3 col-md-3 col-md-3 col-sm-3 col-xs-3">
+                    @backupInfo.Created
+                </div>
+                <form method="post" asp-page-handler="DownloadBackupFile">
+                    <input type="hidden" name="backupId" value="@backupInfo.Id" />
+                    <button type="submit" class="btn btn-primary">Download</button>
+                </form>
+            </div>
+        }
+    </div>
+</main>
+<script>
+    function hideElement(checkbox, element) {
+        if (!checkbox.checked) {
+            element.style.display = 'none';
+        } else {
+            element.style.display = 'block';
+        }
+    }
+
+    var checkboxCron = document.getElementById('CreateBackupRequest_SetCronJob');
+    var formCron = document.getElementById('cron-form');
+
+    var checkboxKeepFile = document.getElementById('CreateBackupRequest_KeepFile');
+    var inputDestPathDiv = document.getElementById('CreateBackupRequest_UserBackupStoragePath_div');
+
+    hideElement(checkboxCron, formCron)
+    hideElement(checkboxKeepFile, inputDestPathDiv)
+    checkboxCron.addEventListener('change', () => { hideElement(checkboxCron, formCron) });
+    checkboxKeepFile.addEventListener('change', () => { hideElement(checkboxKeepFile, inputDestPathDiv) });
+</script>

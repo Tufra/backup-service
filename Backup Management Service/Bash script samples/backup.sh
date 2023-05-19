@@ -3,7 +3,7 @@
 BACKUP_NAME="{0}"
 SOURCE_PATH="{1}"
 DEST_PATH="{2}"
-FILENAME="${{BACKUP_NAME}}_backup_$(date +"%%d-%%m-%%Y").tar.gz"
+FILENAME="${{BACKUP_NAME}}_backup_$(date +"$d-$m-$Y").tar.gz"
 SET_CRONJOB={7}
 FULL_DEST_PATH="$DEST_PATH/$FILENAME"
 CRON_TIMESPEC="{3}"

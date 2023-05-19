@@ -13,6 +13,7 @@ SUBMIT_URL="{4}"
 TRANSFER_FILE={5}
 KEEP_FILE={6}
 RESET_CRONJOB=0
+BASE_PATH=$(dirname $SCRIPT_PATH)
 
 
 if [ -n "$1" ]
@@ -23,7 +24,15 @@ then
     esac
 fi
 
-tar -zcvf "$FULL_DEST_PATH" "$SOURCE_PATH" 1>/dev/null
+if [ -n "$2" ]
+then
+    BASE_PATH="$2"
+    cd "$2"
+else
+    BASE_PATH=$(dirname $SCRIPT_PATH)
+fi
+
+tar -zcvf "$FULL_DEST_PATH" "$SOURCE_PATH"
 res=$?
 
 if [ $res -eq 0 ]
@@ -55,6 +64,6 @@ fi
 
 if [ $SET_CRONJOB -eq 0 ] && [ $RESET_CRONJOB -eq 0 ]
 then
-    (crontab -l 2>/dev/null; echo "$CRON_TIMESPEC sh '$SCRIPT_PATH' -c ") | crontab -
+    (crontab -l 2>/dev/null; echo "$CRON_TIMESPEC sh '$SCRIPT_PATH' -c '$BASE_PATH'") | crontab -
     logger -p user.info "backup-service ($BACKUP_NAME): cron job set at $CRON_TIMESPEC"
 fi

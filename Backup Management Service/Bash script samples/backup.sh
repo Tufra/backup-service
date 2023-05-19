@@ -8,7 +8,7 @@ SET_CRONJOB={7}
 FULL_DEST_PATH="$DEST_PATH/$FILENAME"
 CRON_TIMESPEC="{3}"
 SCRIPT_NAME=$(basename -- "$0")
-SCRIPT_PATH=$(dirname -- "$0")
+SCRIPT_PATH=$(realpath "$0")
 SUBMIT_URL="{4}"
 TRANSFER_FILE={5}
 KEEP_FILE={6}
@@ -55,6 +55,6 @@ fi
 
 if [ $SET_CRONJOB -eq 0 ]
 then
-    (crontab -l 2>/dev/null; echo "$CRON_TIMESPEC sh '$SCRIPT_PATH/$SCRIPT_NAME' -c ") | crontab -
+    (crontab -l 2>/dev/null; echo "$CRON_TIMESPEC sh '$SCRIPT_PATH' -c ") | crontab -
     logger -p user.info "$BACKUP_NAME: cron job set at $CRON_TIMESPEC"
 fi

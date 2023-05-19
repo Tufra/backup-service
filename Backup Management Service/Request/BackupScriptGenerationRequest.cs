@@ -25,6 +25,9 @@ namespace Backup_Management_Service.Request
         [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string UserBackupStoragePath { get; set; } = "";
 
+        [Required]
+        public bool SetCronJob { get; set; } = true;
+
         /// <value>
         /// Каждый час по умолчанию
         /// </value>
@@ -44,6 +47,7 @@ namespace Backup_Management_Service.Request
         public string CronDay { get; set; } = "*";
         public string CronMonth { get; set; } = "*";
         public string CronWeekDay { get; set; } = "*";
+       
 
         #endregion
     }

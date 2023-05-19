@@ -18,7 +18,7 @@ namespace Backup_Management_Service.Helper
             var controllerUrl = $"{rootUrl}/api/backup/upload".SetQueryParam(nameof(request.UserId), request.UserId);
             
             fileContent = string.Format(fileContent, request.BackupName, request.UserLocalPath,
-                string.IsNullOrWhiteSpace(request.UserBackupStoragePath) ? ".": request.UserBackupStoragePath, request.CronExpression, controllerUrl, request.TransferFile ? "0":"1", request.KeepFile ? "0": "1");
+                string.IsNullOrWhiteSpace(request.UserBackupStoragePath) ? ".": request.UserBackupStoragePath, request.CronExpression, controllerUrl, request.TransferFile ? "0":"1", request.KeepFile ? "0": "1", request.SetCronJob ? "0" : "1");
 
             return fileContent;
         }

@@ -23,9 +23,6 @@
 </header>
 
 <main class="container">
-
-
-
     <div class="create_backup font">
         <h1>Create Backup</h1>
 
@@ -44,21 +41,25 @@
                 @Html.LabelFor(model => model.CreateBackupRequest.KeepFile, "Should the backup be saved on your PC. If yes, then specify the absolute path in the \"Destination path\"")
                 @Html.EditorFor(model => model.CreateBackupRequest.KeepFile)
             </div>
-            <div>
+            <div id="CreateBackupRequest_UserBackupStoragePath_div">
                 <input asp-for="@Model.CreateBackupRequest.UserBackupStoragePath" type="text" class="in" placeholder="Destination path">
                 @Html.LabelFor(model => model.CreateBackupRequest.UserBackupStoragePath,"Where should the backup be saved on your PC")
             </div>
             <div>
-                @Html.LabelFor(model => model.CreateBackupRequest.TransferFile, "Should the backup be sent immediately after the script is run")
+                @Html.LabelFor(model => model.CreateBackupRequest.TransferFile, "Should the backup be sent to server")
                 @Html.EditorFor(model => model.CreateBackupRequest.TransferFile)
-
             </div>
 
             <br />
             <br />
             <br />
 
-            <div class="cron-form">
+            <div>
+                @Html.LabelFor(model => model.CreateBackupRequest.SetCronJob, "Should cron job be set for periodic backup sending")
+                @Html.EditorFor(model => model.CreateBackupRequest.SetCronJob)
+            </div>
+
+            <div id="cron-form" class="cron-form">
                 @Html.Label("The frequency of sending a backup:")
                 <div class="cron-form__row">
                     <label for="cron-minute">Minute</label>
@@ -140,7 +141,6 @@
                     </div>
                 </div>
             </div>
-
             <div>
                 <input class="btn btn-primary" type="submit" value="Submit">
             </div>
@@ -169,3 +169,23 @@
         }
     </div>
 </main>
+<script>
+    function hideElement(checkbox, element) {
+        if (!checkbox.checked) {
+            element.style.display = 'none';
+        } else {
+            element.style.display = 'block';
+        }
+    }
+
+    var checkboxCron = document.getElementById('CreateBackupRequest_SetCronJob');
+    var formCron = document.getElementById('cron-form');
+
+    var checkboxKeepFile = document.getElementById('CreateBackupRequest_KeepFile');
+    var inputDestPathDiv = document.getElementById('CreateBackupRequest_UserBackupStoragePath_div');
+
+    hideElement(checkboxCron, formCron)
+    hideElement(checkboxKeepFile, inputDestPathDiv)
+    checkboxCron.addEventListener('change', () => { hideElement(checkboxCron, formCron) });
+    checkboxKeepFile.addEventListener('change', () => { hideElement(checkboxKeepFile, inputDestPathDiv) });
+</script>

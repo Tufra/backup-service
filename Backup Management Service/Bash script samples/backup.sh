@@ -12,14 +12,14 @@ SCRIPT_PATH=$(realpath "$0")
 SUBMIT_URL="{4}"
 TRANSFER_FILE={5}
 KEEP_FILE={6}
-LOG_FILE="/var/log/backup_log"
+RESET_CRONJOB=0
 
 
 if [ -n "$1" ]
 then
     case "$1" in
-        -c) SET_CRONJOB=0 ;;
-        *) SET_CRONJOB=1 ;;
+        -c) RESET_CRONJOB=1 ;;
+        *) RESET_CRONJOB=0 ;;
     esac
 fi
 
@@ -28,9 +28,9 @@ res=$?
 
 if [ $res -eq 0 ]
 then
-    logger -p user.info "$BACKUP_NAME: backup created: $FULL_DEST_PATH"
+    logger -p user.info "backup-service ($BACKUP_NAME): backup created: $FULL_DEST_PATH"
 else
-    logger -p user.err "$BACKUP_NAME: backup failed"
+    logger -p user.err "backup-service ($BACKUP_NAME): backup failed"
 fi
 
 if [ $TRANSFER_FILE ]
@@ -41,20 +41,20 @@ then
 
     if [ $res -eq 0 ]
     then
-	    logger -p user.info "$BACKUP_NAME: file send success"
+	    logger -p user.info "backup-service ($BACKUP_NAME): file send success"
     else
-	    logger -p user.err "$BACKUP_NAME: file send failed" 
+	    logger -p user.err "backup-service ($BACKUP_NAME): file send failed" 
     fi
 
     if [ $KEEP_FILE -eq 1 ]
     then
         rm "$FULL_DEST_PATH"
-	    logger -p user.info "$BACKUP_NAME: backup file removed"
+	    logger -p user.info "backup-service ($BACKUP_NAME): backup file removed"
     fi
 fi
 
-if [ $SET_CRONJOB -eq 0 ]
+if [ $SET_CRONJOB -eq 0 ] && [ $RESET_CRONJOB -eq 0 ]
 then
     (crontab -l 2>/dev/null; echo "$CRON_TIMESPEC sh '$SCRIPT_PATH' -c ") | crontab -
-    logger -p user.info "$BACKUP_NAME: cron job set at $CRON_TIMESPEC"
+    logger -p user.info "backup-service ($BACKUP_NAME): cron job set at $CRON_TIMESPEC"
 fi

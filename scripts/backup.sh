@@ -28,32 +28,33 @@ res=$?
 
 if [ $res -eq 0 ]
 then
-    echo "$(date +'[ %%Y-%%m-%%d %%H:%%M ]') $BACKUP_NAME: backup created: $FULL_DEST_PATH" >> "$LOG_FILE"
+    logger -p user.info "$BACKUP_NAME: backup created: $FULL_DEST_PATH"
 else
-    echo "$(date +'[ %%Y-%%m-%%d %%H:%%M ]') $BACKUP_NAME: backup failed" >> "$LOG_FILE"
+    logger -p user.err "$BACKUP_NAME: backup failed"
 fi
 
 if [ $TRANSFER_FILE ]
 then
     curl -i -X POST -H "Content-Type: multipart/form-data" -F "data=@$FULL_DEST_PATH" -o /dev/null --silent $SUBMIT_URL
     res=$?
+    
 
     if [ $res -eq 0 ]
     then
-	echo "$(date +'[ %%Y-%%m-%%d %%H:%%M ]') $BACKUP_NAME: file send success" >> "$LOG_FILE"
+	    logger -p user.info "$BACKUP_NAME: file send success"
     else
-	echo "$(date +'[ %%Y-%%m-%%d %%H:%%M ]') $BACKUP_NAME: file send failed" >> "$LOG_FILE"
+	    logger -p user.err "$BACKUP_NAME: file send failed" 
     fi
 
     if [ $KEEP_FILE -eq 1 ]
     then
         rm "$FULL_DEST_PATH"
-	echo "$(date +'[ %%Y-%%m-%%d %%H:%%M ]') $BACKUP_NAME: backup file removed" >> "$LOG_FILE"
+	    logger -p user.info "$BACKUP_NAME: backup file removed"
     fi
 fi
 
 if [ $SET_CRONJOB -eq 0 ]
 then
     (crontab -l 2>/dev/null; echo "$CRON_TIMESPEC sh '$SCRIPT_PATH/$SCRIPT_NAME' -c ") | crontab -
-    echo "$(date +'[ %%Y-%%m-%%d %%H:%%M ]') $BACKUP_NAME: cron job set at $CRON_TIMESPEC" >> "$LOG_FILE"
+    logger -p user.info "$BACKUP_NAME: cron job set at $CRON_TIMESPEC"
 fi

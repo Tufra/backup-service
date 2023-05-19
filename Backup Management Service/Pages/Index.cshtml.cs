@@ -8,6 +8,8 @@ using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.StaticFiles;
 using System.Text;
+using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Backup_Management_Service.Pages
 {
@@ -41,11 +43,34 @@ namespace Backup_Management_Service.Pages
 
         public async Task<IActionResult> OnPostGenerateScript()
         {
+            string regexPattern = @"^(~|\.?\/).*";
+
+            if (!string.IsNullOrWhiteSpace(CreateBackupRequest.UserLocalPath) && !Regex.IsMatch(CreateBackupRequest.UserLocalPath, regexPattern))
+            {
+                ModelState.AddModelError(nameof(CreateBackupRequest.UserLocalPath), "Invalid source path");
+            }
+
+            if (CreateBackupRequest.KeepFile)
+            {
+                if(string.IsNullOrWhiteSpace(CreateBackupRequest.UserBackupStoragePath))
+                    ModelState.AddModelError(nameof(CreateBackupRequest.UserBackupStoragePath), "You specified to save the backup, but you didn't specify where in this example");
+                else if (!Regex.IsMatch(CreateBackupRequest.UserBackupStoragePath, regexPattern))
+                    ModelState.AddModelError(nameof(CreateBackupRequest.UserBackupStoragePath), "Invalid destination path");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ListBackupsInfo = await GetAllBackups(Guid.Parse(HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)!.Value!));
+                return Page();
+            }
+
+            
+
             CreateBackupRequest.UserId = Guid.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             var scriptContent = await _scriptHelper.GenerateBackupScript(CreateBackupRequest, HttpContext.Request.Host.Value);
 
             var byteArray = Encoding.UTF8.GetBytes(scriptContent);
-            var fileName = "script.sh";
+            var fileName = $"{CreateBackupRequest.BackupName}_backup_script.sh";
             var contentType = "text/plain";
 
             return File(byteArray, contentType, fileName);

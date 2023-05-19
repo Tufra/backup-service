@@ -15,12 +15,6 @@
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6"></div>
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4"></div>
-                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-6">
-                            <a href="Rules.cshtml" target="_blank" class="navig font">Info</a>
-                        </div>
-                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-6">
-                            <a href="" class="navig font">Exit</a>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -35,18 +29,37 @@
     <div class="create_backup font">
         <h1>Create Backup</h1>
 
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
         <form method="post" asp-page-handler="GenerateScript">
             <div>
-                <input asp-for="@Model.CreateBackupRequest.BackupName" type="text" class="in" placeholder="Title...">
+                <input asp-for="@Model.CreateBackupRequest.BackupName" type="text" class="in" placeholder="Name">
+                @Html.LabelFor(model=> model.CreateBackupRequest.BackupName, "Backup name. Will be displayed in the list")
             </div>
             <div>
-                <input asp-for="@Model.CreateBackupRequest.UserLocalPath" type="text" class="in" placeholder="Source path...">
+                <input asp-for="@Model.CreateBackupRequest.UserLocalPath" type="text" class="in" placeholder="Source path">
+                @Html.LabelFor(model=> model.CreateBackupRequest.UserLocalPath, "Specify path to the folder to be backed up")
             </div>
             <div>
-                <input asp-for="@Model.CreateBackupRequest.UserBackupStoragePath" type="text" class="in" placeholder="Destination path...">
+                @Html.LabelFor(model => model.CreateBackupRequest.KeepFile, "Should the backup be saved on your PC. If yes, then specify the absolute path in the \"Destination path\"")
+                @Html.EditorFor(model => model.CreateBackupRequest.KeepFile)
+            </div>
+            <div>
+                <input asp-for="@Model.CreateBackupRequest.UserBackupStoragePath" type="text" class="in" placeholder="Destination path">
+                @Html.LabelFor(model => model.CreateBackupRequest.UserBackupStoragePath,"Where should the backup be saved on your PC")
+            </div>
+            <div>
+                @Html.LabelFor(model => model.CreateBackupRequest.TransferFile, "Should the backup be sent immediately after the script is run")
+                @Html.EditorFor(model => model.CreateBackupRequest.TransferFile)
+
             </div>
 
+            <br />
+            <br />
+            <br />
+
             <div class="cron-form">
+                @Html.Label("The frequency of sending a backup:")
                 <div class="cron-form__row">
                     <label for="cron-minute">Minute</label>
                     <div class="cron-form__field">
@@ -141,18 +154,18 @@
 
         @foreach (var backupInfo in Model.ListBackupsInfo)
         {
-        <div class="row">
-            <div class="font last-backup col-xl-7 col-lg-7 col-md-7 col-md-6 col-sm-6 col-xs-6">
-                @backupInfo.Name
+            <div class="row">
+                <div class="font last-backup col-xl-7 col-lg-7 col-md-7 col-md-6 col-sm-6 col-xs-6">
+                    @backupInfo.Name
+                </div>
+                <div class="font last-backup col-xl-3 col-lg-3 col-md-3 col-md-3 col-sm-3 col-xs-3">
+                    @backupInfo.Created
+                </div>
+                <form method="post" asp-page-handler="DownloadBackupFile">
+                    <input type="hidden" name="backupId" value="@backupInfo.Id" />
+                    <button type="submit" class="btn btn-primary">Download</button>
+                </form>
             </div>
-            <div class="font last-backup col-xl-3 col-lg-3 col-md-3 col-md-3 col-sm-3 col-xs-3">
-                @backupInfo.Created
-            </div>
-            <form method="post" asp-page-handler="DownloadBackupFile">
-                <input type="hidden" name="backupId" value="@backupInfo.Id" />
-                <button type="submit" class="btn btn-primary">Download</button>
-            </form>
-        </div>
         }
     </div>
 </main>
